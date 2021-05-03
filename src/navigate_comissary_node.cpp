@@ -2,11 +2,11 @@
 #include <move_base_msgs/MoveBaseAction.h>
 #include <actionlib/client/simple_action_client.h>
 
-bool moveToPosition(double Xpos, double Ypos);
+bool moveToPosition(double xPosition, double yPosition);
 
 // coordinates of locations to navigate to
-int xPositions[] = {29.14};
-int yPositions[] = {22.59};
+double xPositions[] = {29.14};
+double yPositions[] = {22.59};
 
 int sizeOfArray = sizeof(xPositions)/sizeof(xPositions[0]);
 
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 
     while (goalSuccess) {
         for (int i=1; i<sizeOfArray; i++) {
-            positionReached = moveToGoal(xPositions[i], yPositions[i]);
+            positionReached = moveToPosition(xPositions[i], yPositions[i]);
             if (positionReached) {
                 ROS_INFO("Reached position, running next position");
                 goalSuccess = true;
@@ -33,11 +33,11 @@ int main(int argc, char** argv) {
     }
 }
 
-bool moveToGoal(int xPosition, int yPosition) {
+bool moveToPosition(double xPosition, double yPosition) {
     actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> ac("move_base", true);
 
     while (!ac.waitForServer(ros::Duration(5.0))) {
-        ROS_INFO("move_base action server has not come up yet")
+        ROS_INFO("move_base action server has not come up yet");
     }
 
     move_base_msgs::MoveBaseGoal position;

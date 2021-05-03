@@ -7,7 +7,11 @@ project(butler_navigation)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+
+find_package(catkin REQUIRED COMPONENTS
+roscpp
+actionlib
+)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -99,10 +103,10 @@ find_package(catkin REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES nanny_navigation
-#  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
+INCLUDE_DIRS
+CATKIN_DEPENDS roscpp
+CATKIN_DEPENDS actionlib
+CATKIN_DEPENDS move_base
 )
 
 ###########
@@ -112,14 +116,16 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
+${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/nanny_navigation.cpp
 # )
+
+add_executable(navigate_comissary_node src/navigate_comissary_node.cpp)
+target_link_libraries(navigate_comissary_node ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

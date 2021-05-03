@@ -8,7 +8,7 @@
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
   <maintainer email="coach@todo.todo">coach</maintainer>
-
+  
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
@@ -50,7 +50,12 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
 
-
+  <build_depend>roscpp</build_depend>
+  <exec_depend>roscpp</exec_depend>
+  <build_depend>actionlib</build_depend>
+  <exec_depend>actionlib</exec_depend>
+  <build_depend>move_base</build_depend>
+  <exec_depend>move_base</exec_depend>
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->

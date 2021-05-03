@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<launch>
+
+    <node pkg="butler_navigation" name="navigate_comissary_node" type="navigate_comissary_node" output="screen" />
+
+</launch>
