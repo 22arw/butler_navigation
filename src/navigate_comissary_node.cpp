@@ -2,11 +2,12 @@
 #include <move_base_msgs/MoveBaseAction.h>
 #include <actionlib/client/simple_action_client.h>
 
-bool moveToPosition(double xPosition, double yPosition);
+bool moveToPosition(double xPosition, double yPosition, double wOrientation);
 
-// coordinates of locations to navigate to
-double xPositions[] = {29.14};
-double yPositions[] = {22.59};
+// coordinates of locations and pose to navigate to
+double xPositions[] = {29.14, 25.73, 25.76, 21.63, 21.77, 32.74, 32.74, 29.27};
+double yPositions[] = {22.59, 22.87, 39.4, 38.91, 22.88, 22.73, 38.68, 38.53};
+double wOrientations[] = {0.05, 0.69, 0.009, 0.71, 0.99, 0.71, 0.01, 0.71};
 
 int sizeOfArray = sizeof(xPositions)/sizeof(xPositions[0]);
 
@@ -18,9 +19,11 @@ int main(int argc, char** argv) {
     
     bool goalSuccess = true;
 
+    ROS_INFO("Starting robot journey");
     while (goalSuccess) {
-        for (int i=1; i<sizeOfArray; i++) {
-            positionReached = moveToPosition(xPositions[i], yPositions[i]);
+        for (int i=0; i<sizeOfArray; i++) {
+            ROS_INFO("sending command");
+            positionReached = moveToPosition(xPositions[i], yPositions[i], wOrientations[i]);
             if (positionReached) {
                 ROS_INFO("Reached position, running next position");
                 goalSuccess = true;
@@ -33,7 +36,7 @@ int main(int argc, char** argv) {
     }
 }
 
-bool moveToPosition(double xPosition, double yPosition) {
+bool moveToPosition(double xPosition, double yPosition, double wOrientation) {
     actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> ac("move_base", true);
 
     while (!ac.waitForServer(ros::Duration(5.0))) {
@@ -48,11 +51,8 @@ bool moveToPosition(double xPosition, double yPosition) {
 
     position.target_pose.pose.position.x = xPosition;
     position.target_pose.pose.position.y = yPosition;
-    position.target_pose.pose.position.z = 0.0;
-    position.target_pose.pose.orientation.x = 0.0;
-    position.target_pose.pose.orientation.y = 0.0;
-    position.target_pose.pose.orientation.z = 0.0;
-    position.target_pose.pose.orientation.w = 0.0;
+    position.target_pose.pose.orientation.w = wOrientation;
+
 
     ROS_INFO("Sending position coordinates to move_base action server");
     ac.sendGoal(position);
